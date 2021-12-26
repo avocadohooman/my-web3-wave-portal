@@ -1,10 +1,4 @@
 const main = async () => {
-	/*
-		In order to deploy something to the blockchain, we need to have a wallet address! Hardhat does this 
-		for us magically in the background, but here I grabbed the wallet address of contract owner and I also 
-		grabbed a random wallet address and called it randomPerson. This will make more sense in a moment.
-	*/
-	const [owner, randomPerson] = await hre.ethers.getSigners();
 	/* 	
 		Here we create a local ETH network, for the contract WavePortal
 	 	After completion of the script, the network will be destroyed
@@ -17,20 +11,25 @@ const main = async () => {
 	const waveContract = await waveContractFactory.deploy();
 	// here we wait until our contract is done deploying
 	await waveContract.deployed();
-
 	console.log('Contract deplotyed to: ', waveContract.address);
-	console.log('Contract deplotyed by: ', owner.address);
 
 	let waveCount;
 	waveCount = await waveContract.getTotalWaves();
 
 	let waveTxn;
-	waveTxn = await waveContract.wave();
+	waveTxn = await waveContract.wave("Small contracts are siiiick!");
+	await waveTxn.wait();
+	/*
+		In order to deploy something to the blockchain, we need to have a wallet address! Hardhat does this 
+		for us magically in the background, but here I grabbed the wallet address of contract owner and I also 
+		grabbed a random wallet address and called it randomPerson. This will make more sense in a moment.
+	*/
+	const [user, randomPerson] = await hre.ethers.getSigners();
+	waveTxn = await waveContract.connect((randomPerson)).wave('Another message!');
 	await waveTxn.wait();
 
-	let visitorMessage;
-	visitorMessage = await waveContract.visitorMessage("Small contracts are siiiick!")
-	
+	let allWaves = await waveContract.getAllWaves();
+	console.log(allWaves);
 	waveCount = await waveContract.getTotalWaves();
 
 }
