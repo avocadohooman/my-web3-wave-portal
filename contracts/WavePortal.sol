@@ -21,6 +21,10 @@ contract WavePortal {
 		console.log("%s has waved", msg.sender);
 	}
 
+	function visitorMessage(string memory message) public view {
+		console.log("%s has left a message: %s", msg.sender, message);
+	}
+
 	function getTotalWaves() public view returns (uint256) {
 		console.log("We have %d total waves!", totalWaves);
 		return totalWaves;
