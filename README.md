@@ -1,6 +1,6 @@
-# Basic Sample Hardhat Project
+# A Twitter like web3 application
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+A project where to learn some Solidity, write + deploy a smart contract to the ETH blockchain, and build a Web3 client app to interact with your contract.
 
 Try running some of the following tasks:
 
