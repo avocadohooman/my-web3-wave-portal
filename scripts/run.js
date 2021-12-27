@@ -41,7 +41,6 @@ const main = async () => {
 	contractBalance = await hre.ethers.provider.getBalance(
 		waveContract.address
 	);
-	console.log('Contract balance:', hre.ethers.utils.formatEther(contractBalance));
 
 	/*
 		In order to deploy something to the blockchain, we need to have a wallet address! Hardhat does this 
@@ -55,6 +54,7 @@ const main = async () => {
 	let allWaves = await waveContract.getAllWaves();
 	console.log(allWaves);
 	waveCount = await waveContract.getTotalWaves();
+	console.log('Contract balance:', hre.ethers.utils.formatEther(contractBalance));
 
 }
 
