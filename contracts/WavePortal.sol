@@ -14,7 +14,6 @@ contract WavePortal {
 		contract, with the help of the logging facility of EVM. Events notify the applications about the change 
 		made to the contracts and applications which can be used to execute the dependent logic.
 	*/
-
 	event NewWave(address indexed from, uint256 timestamp, string message);
 
 	struct Wave {
@@ -30,7 +29,7 @@ contract WavePortal {
 	*/  
 	Wave[] waves;
 
-	constructor() {
+	constructor() payable {
 		console.log('Yo yo');
 	}
 
@@ -45,6 +44,20 @@ contract WavePortal {
 		uint256 timestamp = block.timestamp;
 		waves.push(Wave(msg.sender, _message, timestamp));
 		emit NewWave(msg.sender, timestamp, _message);
+
+		uint256 prizeAmount = 0.0001 ether;
+		/* 
+			require Solidity function guarantees validity of conditions that cannot be detected before execution. 
+			It checks inputs, contract state variables and return values from calls to external contracts.
+		*/
+		require (
+			//address(this).balance is the balance of the contract itself.
+			prizeAmount <= address(this).balance,
+			"Trying to withdraw more money than the contract has."
+		);
+		(bool success, ) = (msg.sender).call{value: prizeAmount}("");
+		//require(success is where we know the transaction was a success
+		require(success, "Failed to withdraw money from the contract");
 	}
 
 	// View function ensure that they do not modify the state

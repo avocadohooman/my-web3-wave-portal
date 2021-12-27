@@ -8,17 +8,41 @@ const main = async () => {
 		In reality, Hardhat is the HRE.
 	*/ 
 	const waveContractFactory = await hre.ethers.getContractFactory('WavePortal');
-	const waveContract = await waveContractFactory.deploy();
+	const waveContract = await waveContractFactory.deploy({
+		// here we deploy our contract with 0.1 ether
+		value: hre.ethers.utils.parseEther('0.1'),
+	  });
+
 	// here we wait until our contract is done deploying
 	await waveContract.deployed();
 	console.log('Contract deplotyed to: ', waveContract.address);
 
+	/*
+		Get contract balance
+	*/
+	let contractBalance = await hre.ethers.provider.getBalance(
+		waveContract.address
+	);
+	console.log('Contract balance:', hre.ethers.utils.formatEther(contractBalance));
+
+	/*
+		Get wave count
+	*/
 	let waveCount;
 	waveCount = await waveContract.getTotalWaves();
 
+	/*
+		Send Wave
+	*/
 	let waveTxn;
 	waveTxn = await waveContract.wave("Small contracts are siiiick!");
 	await waveTxn.wait();
+
+	contractBalance = await hre.ethers.provider.getBalance(
+		waveContract.address
+	);
+	console.log('Contract balance:', hre.ethers.utils.formatEther(contractBalance));
+
 	/*
 		In order to deploy something to the blockchain, we need to have a wallet address! Hardhat does this 
 		for us magically in the background, but here I grabbed the wallet address of contract owner and I also 
