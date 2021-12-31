@@ -181,6 +181,7 @@ export default function App() {
 		return () => {
 			if (wavePortalContract) {
 				wavePortalContract.off("NewWave", onNewWave);
+				wavePortalContract.off("YouWon", youWon);
 			}
 		}
 	}, []);
