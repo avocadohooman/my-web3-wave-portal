@@ -23,16 +23,37 @@
 	color: gray;
 	margin-top: 16px;
   }
+
+  .important {
+	font-style: 'bold';
+  }
   
-  .waveButton {
+  .waveButton,
+  .celebrationButton,
+  .miningButton {
 	cursor: pointer;
 	margin-top: 16px;
 	padding: 8px;
 	border: 0;
 	border-radius: 5px;
   }
+
+  .celebrationButton {
+	background-color: #68D391;
+  }
+
+  .miningButton {
+	background-color: #63B3ED;
+  }
   
   .waveMessageWrapper {
+	margin-top: 20px;
+	display: flex;
+	width: 100%;
+	flex-direction: column;
+  }
+
+  .memeWrapper {
 	display: flex;
 	width: 100%;
   }
@@ -43,4 +64,13 @@
 	padding: 8px;
 	border-radius: 5px;
 	width: inherit;
+	width: 97%;
+  }
+
+  .waveMessagesWrapper {
+	  display: flex;
+	  flex-direction: row;
+	  flex-wrap: wrap;
+	  flex-grow: 1;
+	  width: 100%;
   }

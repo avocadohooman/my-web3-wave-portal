@@ -21,12 +21,14 @@ contract WavePortal {
 		contract, with the help of the logging facility of EVM. Events notify the applications about the change 
 		made to the contracts and applications which can be used to execute the dependent logic.
 	*/
-	event NewWave(address indexed from, uint256 timestamp, string message);
+	event NewWave(address indexed from, uint256 timestamp, string message, string url);
+	event YouWon(address indexed from, uint256 timestamp, string message);
 
 	struct Wave {
 		// Holds a 20 byte value (size of an Ethereum address)
 		address waver;
 		string message;
+		string url;
 		uint256 timestamp;
 	}
 
@@ -41,7 +43,7 @@ contract WavePortal {
 		seed = (block.timestamp + block.difficulty) % 100;
 	}
 
-	function wave(string memory _message) public {
+	function wave(string memory _message, string memory _url) public {
 		/*
 			here we check that the last wave is at least 30 seconds
 		*/
@@ -58,7 +60,7 @@ contract WavePortal {
 		*/
 		console.log("%s has waved", msg.sender);
 		uint256 timestamp = block.timestamp;
-		waves.push(Wave(msg.sender, _message, timestamp));
+		waves.push(Wave(msg.sender, _message, _url, timestamp));
 
         /*
          * Generate a new seed for the next user that sends a wave
@@ -66,8 +68,8 @@ contract WavePortal {
 
 		seed = (block.difficulty + block.timestamp + seed) % 100;
 		console.log("Random # generated seed: %d", seed);
-
-		if (seed <= 10) {
+		console.log("_url legth", bytes(_url).length);
+		if (seed <= 10 && bytes(_url).length == 0) {
 			console.log("%s won!", msg.sender);
 			uint256 prizeAmount = 0.0001 ether;
 			/* 
@@ -82,8 +84,27 @@ contract WavePortal {
 			(bool success, ) = (msg.sender).call{value: prizeAmount}("");
 			//require(success is where we know the transaction was a success
 			require(success, "Failed to withdraw money from the contract");
+			string memory awardMessage = "Congratulations! You won: 0.0001 ETH!";
+			emit YouWon(msg.sender, timestamp, awardMessage);
+		} else if (seed <= 50 && bytes(_url).length > 0) {
+			console.log("%s won!", msg.sender);
+			uint256 prizeAmount = 0.0001 ether;
+			/* 
+				require Solidity function guarantees validity of conditions that cannot be detected before execution. 
+				It checks inputs, contract state variables and return values from calls to external contracts.
+			*/
+			require (
+				//address(this).balance is the balance of the contract itself.
+				prizeAmount <= address(this).balance,
+				"Trying to withdraw more money than the contract has."
+			);
+			(bool success, ) = (msg.sender).call{value: prizeAmount}("");
+			//require(success is where we know the transaction was a success
+			require(success, "Failed to withdraw money from the contract");
+			string memory awardMessage = "Congratulations! You won: 0.0001 ETH!";
+			emit YouWon(msg.sender, timestamp, awardMessage);
 		}
-		emit NewWave(msg.sender, timestamp, _message);
+		emit NewWave(msg.sender, timestamp, _message, _url);
 	}
 
 	// View function ensure that they do not modify the state

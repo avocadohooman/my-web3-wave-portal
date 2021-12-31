@@ -35,7 +35,7 @@ const main = async () => {
 		Send Wave
 	*/
 	let waveTxn;
-	waveTxn = await waveContract.wave("Small contracts are siiiick!");
+	waveTxn = await waveContract.wave("Small contracts are siiiick!", "https://giphy.com/gifs/studiosoriginals-goth-gothidays-gUt9idzgHb1ZfXLxsB");
 	await waveTxn.wait();
 
 	contractBalance = await hre.ethers.provider.getBalance(
@@ -48,7 +48,7 @@ const main = async () => {
 		grabbed a random wallet address and called it randomPerson. This will make more sense in a moment.
 	*/
 	const [user, randomPerson] = await hre.ethers.getSigners();
-	waveTxn = await waveContract.connect((randomPerson)).wave('Another message!');
+	waveTxn = await waveContract.connect((randomPerson)).wave('Another message!', '');
 	await waveTxn.wait();
 
 	let allWaves = await waveContract.getAllWaves();
