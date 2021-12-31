@@ -6,7 +6,7 @@ import abi from './utils/WaverPortal.json';
 export default function App() {
 
   const [currentAccount, setCurrentAccount] = useState("");
-  const contractAddress = "0x9B43B98e68D8253c9cB0e1BbE5a1A1Fbf0E35D90";
+  const contractAddress = "0x1E8491be77bE785cd286120C632BD81E402D8057";
   const contractABI = abi.abi;
   const [totalAmountOfWaves, setTotalAmountOfWaves] = useState(0);
   const [allWaves, setAllWaves] = useState([]);
